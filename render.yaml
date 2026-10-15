@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: swarmlab
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python ml_model.py
+    startCommand: python serve.py
+    healthCheckPath: /
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7

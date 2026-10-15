@@ -2,7 +2,7 @@
 dashboard.py – Serves the SwarmLab web UI and a JSON feed of live peer state.
 
 Reads the per-peer snapshots that peer.py writes to ./telemetry and exposes
-them at /api/state. Static files are served from ./web. Localhost only.
+them at /api/state. Static files are served from ./web. Binds to localhost unless --host/HOST is set.
 
 Usage: python dashboard.py [--port 8765]
 """
@@ -51,11 +51,13 @@ class Handler(SimpleHTTPRequestHandler):
 
 def main():
     parser = argparse.ArgumentParser(description='SwarmLab dashboard server')
-    parser.add_argument('--port', type=int, default=8765)
+    parser.add_argument('--port', type=int, default=int(os.environ.get('PORT', 8765)))
+    parser.add_argument('--host', default=os.environ.get('HOST', '127.0.0.1'),
+                        help='bind address (use 0.0.0.0 when hosting)')
     args = parser.parse_args()
-    server = ThreadingHTTPServer(('127.0.0.1', args.port),
+    server = ThreadingHTTPServer((args.host, args.port),
                                  partial(Handler, directory=WEB_DIR))
-    print(f"SwarmLab dashboard on http://127.0.0.1:{args.port}  (Ctrl+C to stop)")
+    print(f"SwarmLab dashboard on http://{args.host}:{args.port}  (Ctrl+C to stop)")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

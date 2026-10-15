@@ -51,6 +51,7 @@ python peer.py --port 5005 --role normal --peers 5001,5002,5003,5004,5005
 ```bash
 python run_simulation.py --dashboard --duration 0   # runs 4 peers until Ctrl+C + UI at http://127.0.0.1:8765
 python dashboard.py                       # UI only, reads ./telemetry written by peers
+python serve.py                           # hosting entry point (used by Render; honours $PORT)
 ```
 
 Open `web/index.html` via the server, or add `?demo` to the URL for a built-in

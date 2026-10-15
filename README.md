@@ -49,7 +49,7 @@ python peer.py --port 5005 --role normal --peers 5001,5002,5003,5004,5005
 ## SwarmLab dashboard
 
 ```bash
-python run_simulation.py --dashboard      # runs 4 peers + UI at http://127.0.0.1:8765
+python run_simulation.py --dashboard --duration 0   # runs 4 peers until Ctrl+C + UI at http://127.0.0.1:8765
 python dashboard.py                       # UI only, reads ./telemetry written by peers
 ```
 

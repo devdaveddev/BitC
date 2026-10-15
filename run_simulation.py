@@ -19,7 +19,7 @@ from utils import generate_test_file, PIECE_SIZE
 def main():
     parser = argparse.ArgumentParser(description='Run P2P simulation with 4 peers')
     parser.add_argument('--duration', type=int, default=90,
-                        help='Simulation duration in seconds (default: 90)')
+                        help='Simulation duration in seconds; 0 = run until Ctrl+C (default: 90)')
     parser.add_argument('--pieces', type=int, default=48,
                         help='Number of 1 KiB pieces in the shared file (default: 48)')
     parser.add_argument('--dashboard', action='store_true',
@@ -47,7 +47,7 @@ def main():
         dash = subprocess.Popen([sys.executable, os.path.join(script_dir, 'dashboard.py')],
                                 cwd=script_dir)
         processes.append(dash)
-        print("  Dashboard: http://127.0.0.1:8765")
+        print("  Dashboard: http://127.0.0.1:8765  (open this URL in a browser)")
 
     print(f"=== BitTorrent P2P Simulation ===")
     print(f"Duration: {args.duration} seconds\n")
@@ -80,7 +80,8 @@ def main():
     print("(Press Ctrl+C to stop early)\n")
 
     try:
-        for elapsed in range(args.duration):
+        import itertools
+        for elapsed in (itertools.count() if args.duration == 0 else range(args.duration)):
             time.sleep(1)
             if elapsed > 0 and elapsed % 15 == 0:
                 print(f"  ... {elapsed}s elapsed")

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.log
+strategy_model.pkl
+*.pkl.tmp
+telemetry/
